@@ -10,7 +10,9 @@ System.config({
   },
   paths: {
     "github:*": "jspm_packages/github/*",
-    "npm:*": "jspm_packages/npm/*"
+    "npm:*": "jspm_packages/npm/*",
+    "donut/*": "scripts/charts/donut/*",
+    "donut-widget/*": "scripts/charts/donutWidget/*"
   },
 
   map: {
