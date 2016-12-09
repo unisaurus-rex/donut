@@ -58,7 +58,33 @@
 
         <!-- row that contains two columns: 8 and 4 -->
         <div class="flex-row row">
-          <div class="col-lg-9 col-md-9 col-sm-12 "></div>
+          <div class="col-lg-9 col-md-9 col-sm-12 ">
+            
+            <div id="donutid"> </div>
+                            <ul class="list-inline text-center">
+                  <li class="btn-group btn-group-xs" data-toggle="buttons">
+                    <label class="btn btn-success active" id="authorizations" name="transactionType">
+                      <input type="checkbox" autocomplete="off" value="authorizations" name="transactionType">
+                      <i class="fa fa-check"></i>
+                    </label>
+                  </li>
+                  <li>Authorizations</li>
+                  <li class="btn-group btn-group-xs" data-toggle="buttons">
+                    <label class="btn btn-warning active" id="chargebacks" name="transactionType">
+                      <input type="checkbox" autocomplete="off" value="chargebacks" name="transactionType">
+                      <i class="fa fa-check"></i>
+                    </label>
+                  </li>
+                  <li>Chargebacks</li>
+                  <li class="btn-group btn-group-xs" data-toggle="buttons">
+                    <label class="btn btn-danger active" id="declines" name="transactionType">
+                      <input type="checkbox" autocomplete="off" value="declines" name="transactionType">
+                      <i class="fa fa-check"></i>
+                    </label>
+                  </li>
+                  <li>Declines</li>
+                </ul>
+          </div>
           <div class="col-lg-3 col-md-3 col-sm-12"></div>
         </div>
         

@@ -1,116 +1,42 @@
-import {hasClass} from 'charts/helper';
+import * as d3 from "d3";
 
-var allData;
+export default function donutChart(){
 
-export function drawDonut(config) {
-  var radius = Math.min( config.width, config.height) / 2;
-  var innerRad = radius / 4;
-  var hoverRad = 15;
-  var padAngle = 0;
-  var svg = drawSvg();
-  var arc = defineArc (radius, radius-innerRad);
-  var hoverArc = defineArc (radius-innerRad, radius+hoverRad);
-  var pie = definePie();
-  
-  drawText();
+  var width = 500,
+  height = 500,
+  innerText = "TOTAL TRANS";
+    var radius = Math.min( width, height) / 2;
+    var innerRad = radius / 4;
+    var hoverRad = 15;
+    var padAngle = 0;
+    var valueFunction = function(d){
+      return d.number;
+    }
+    var constancyFunction = function(d){
+      return d.transactionType;
+    }
+    var classMap = {"declines": "fill-danger", "authorizations": "fill-success", "chargebacks":"fill-warning"};
 
-  d3.csv(config.filePath, type, function(error, data) {
-    if (error) throw error;
+  function chart(container, dataArr){
 
-    //add sum to center 
-    updateSum(svg, config, data);
-
-    //make a copy of the data
-    allData = data;
-
-    var path = svg.selectAll("path");
-    var g = svg.selectAll(".arc")
-      .data(pie(allData), function(d){return d[ config.keys[0]]})
-    ;
-
-    enterAndUpdate(g, path, allData);
-  }); //end d3 read
-
-  return function updateDonut() {
-
-    var filteredData = filterData();
-    updateSum(svg, config, filteredData);
-
-    var path = svg.selectAll("path");
-    var g = svg.selectAll(".arc")
-      .data(pie(filteredData), function(d){return d[ config.keys[0]]})
-    ;
-    
-    enterAndUpdate(g, path, filteredData);
-    exit(g);
-  } //end updateDonut
-
-
-  function type(d) {
-    d[ config.keys[1]] = +d[ config.keys[1]];
-    return d;
-  }
-
-  function drawSvg(){  
-    return d3.select(config.parentDiv)
-      .classed("svg-container", true)
-      .append("svg")
-      .attr("viewBox", "0 0 " + config.width + " " + config.height)
-      //class for responsivenesss
-      .classed("svg-content-responsive-pie", true)
-      .attr("width", config.width)
-      .attr("height", config.height)
-      .append("g")
-      .attr("id", "donutchart")
-      .attr("transform", "translate(" + config.width / 2 + "," + config.height / 2 + ")")
-    ;
-  }
-
-  function defineArc (outer, inner){
-    return d3.arc()
-      .outerRadius(outer)
-      .innerRadius(inner)
-    ;
-  }
-
-  function definePie(){
-    return d3.pie()
-      .sort(null)
-      .value(function(d) {
-        //return the numbers in csv(column 2)
-        return d[ config.keys[1] ];
-      })
-      .padAngle(padAngle)
-    ;
-  }
-
-  function filterData(){
-    var divs = [];
-    for (var i =0; i< config.data.length; i++){
-      divs[ config.data[i] ] = document.getElementById( config.data[i] )
+        function arcTween(a) {
+      var startAngle = a.startAngle; //<-- keep reference to start angle
+      var i = d3.interpolate(a.startAngle, a.endAngle); //<-- interpolate start to end
+      return function(t) {
+          return arc({ //<-- return arc at each iteration from start to interpolate end
+            startAngle: startAngle,
+            endAngle: i(t)
+          });
+      };
     }
 
-    var filteredData= allData.filter( function(d) {
-      if(divs[ d[ config.keys[0] ] ]) {
-        if (hasClass( divs[ d[ config.keys[0] ] ] , "active"))
-          return true;
-        else
-          return false;        
-      }
-      return false;
-    })
-    return filteredData;
-  }
-
-  function updateSum(svg, config, data){   
     var sum = 0;
-    
-    data.forEach(function (d, j) {
-        sum += d [config.keys[1]];
+    dataArr.forEach(function (d, j) {
+        sum += d.number;
       })
 
     //remove current total
-    svg.select( "text.data" )
+    container.select( "text.data" )
       .transition()
       .duration(100)
       .style("opacity", 0)
@@ -118,7 +44,7 @@ export function drawDonut(config) {
     ;
     
     //update total
-    svg.append("text")
+    container.append("text")
       .attr("dy", ".95em")
       .style("text-anchor", "middle")
       .style("opacity", 0)
@@ -130,67 +56,128 @@ export function drawDonut(config) {
       .duration(1000)
       .style("opacity", 1)
     ;
-  }
 
-  function drawText(){
+    
+    container.selectAll ("text.inside")
+    .remove();
     //add text for inner circle
-    svg.append("text")
+    container.append("text")
       .attr("dy", "-0.5em")
       .style("text-anchor", "middle")
       .attr("class", "inside")
       .text(function() {
-        return config.innerText;
+        return innerText;
       })
     ;
-  }
+    var arc = d3.arc()
+      .outerRadius(radius)
+      .innerRadius(radius-innerRad)
+    ;
 
-  function arcTween(a) {
-    var startAngle = a.startAngle; //<-- keep reference to start angle
-    var i = d3.interpolate(a.startAngle, a.endAngle); //<-- interpolate start to end
-    return function(t) {
-      return arc({ //<-- return arc at each iteration from start to interpolate end
-        startAngle: startAngle,
-        endAngle: i(t)
-      });
-    };
-  }
+    var hoverArc = d3.arc()
+      .outerRadius(radius-innerRad)
+      .innerRadius(radius + hoverRad)
+    ;
 
-  function enterAndUpdate(g, path, data){
-    g
-    .data(pie(data))
-    .enter().append("g")
-      .attr("class", "arc")
+    var pie = d3.pie()
+      .sort(null)
+      .value ( valueFunction )
+      .padAngle(padAngle)
+    ;
+
+    var sel = container.selectAll("path")
+      .data(pie(dataArr), constancyFunction)
+    ;
+
+    sel
+      .data(pie(dataArr))
+      .enter()
       .append("path")
-    .merge(path)
-    .data(pie(data))
+      .merge(sel)
+      .data(pie(dataArr))
       .on("mouseover", function(d) {
-        d3.select(this).transition()
-          .duration(1000)
-          .attr("d", hoverArc);
-      })
-      .on("mouseout", function(d) {
-        d3.select(this).transition()
-          .duration(1000)
-          .attr("d", arc);
-      })
-      .attr("class", function(d){
-        return config.classMap [ d.data[ config.keys[0]] ]  + ' ' + d[ config.keys[0]];
-      })
-      .transition()
-      .duration(700)
-      .attrTween("d", arcTween)
-    ;
+            d3.select(this).transition()
+                .duration(1000)
+                .attr("d", hoverArc);
+          })
+        .on("mouseout", function(d) {
+            d3.select(this).transition()
+                .duration(1000)
+                .attr("d", arc);
+        })
+        .attr("class", function (d) {
+          return classMap[d.data.transactionType];
+        })
+        .transition()
+        .duration(700)
+        .attrTween("d", arcTween)
+        ;
+
+        sel.exit()
+          .transition()
+          .duration(700)
+          .attr("d", arcTween)
+          .style("opacity", 0)
+          .remove()
+      ;
+
+
   }
 
-  function exit(g){
-    g
-    .exit()
-      .transition()
-      .duration(700)
-      .attr("d", arcTween)
-      .style("opacity", 0)
-      .remove()
-    ;
+  chart.width = function(value){
+    if (!arguments.length) return width;
+
+    width = value;
+    return chart;
   }
 
-}//end drawDonut
+  chart.height = function(value){
+    if (!arguments.length) return height;
+    height = value;
+    return chart; 
+  }
+  chart.innerText = function(value){
+    if (!arguments.length) return innerText;
+    innerText = value;
+    return chart; 
+  }
+  chart.radius = function(value){
+    if (!arguments.length) return radius;
+    radius = value;
+    return chart; 
+  }
+  chart.innerRad = function(value){
+    if (!arguments.length) return innerRad;
+    innerRad = value;
+    return chart; 
+  }
+  chart.hoverRad = function(value){
+    if (!arguments.length) return hoverRad;
+    hoverRad = value;
+    return chart; 
+  }
+  chart.padAngle = function(value){
+    if (!arguments.length) return padAngle;
+    padAngle = value;
+    return chart; 
+  }
+
+  chart.constancyFunction = function(value){
+    if (!arguments.length) return constancyFunction;
+    constancy = value; 
+    return chart;
+  }
+  chart.valueFunction = function(value){
+    if (!arguments.length) return valueFunction;
+    valueFunction = value;
+    return chart; 
+  }
+  chart.classMap = function(value){
+    if (!arguments.length) return classMap;
+    classMap = value;
+    return chart;
+  }
+
+
+    return chart;
+}

@@ -1,0 +1,25 @@
+$donut-width: 50%;
+.fill-brand-info{
+  fill: $brand-info;
+}
+.fill-gray{
+  fill: $gray;
+}
+.fill-danger{
+  fill: $brand-danger;
+}
+.fill-success{
+  fill: $brand-success;
+}
+.fill-warning{
+  fill: $brand-warning;
+}
+
+svg.svg-content-responsive-pie{
+  display: block;
+  margin: auto;
+  width: $donut-width;
+  height: $donut-width;
+  padding: 2%;
+  overflow: visible;
+}
