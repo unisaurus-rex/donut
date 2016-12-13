@@ -5,21 +5,22 @@ export default function donutChart(){
   var width = 500,
   height = 500,
   innerText = "TOTAL TRANS";
-    var radius = Math.min( width, height) / 2;
-    var innerRad = radius / 4;
-    var hoverRad = 15;
-    var padAngle = 0;
-    var valueFunction = function(d){
-      return d.number;
-    }
-    var constancyFunction = function(d){
-      return d.transactionType;
-    }
-    var classMap = {"declines": "fill-danger", "authorizations": "fill-success", "chargebacks":"fill-warning"};
-
+  var radius = Math.min( width, height) / 2;
+  var innerRad = radius / 4;
+  var hoverRad = 15;
+  var padAngle = 0;
+  var valueFunction = function(d){
+    return d.number;
+  }
+  var constancyFunction = function(d){
+    return d.transactionType;
+  }
+  var classMap = {"declines": "fill-danger", "authorizations": "fill-success", "chargebacks":"fill-warning"};
+  var classMapFunction= function(d) {
+    classMap[d.data.transactionType];
+  }
   function chart(container, dataArr){
-
-        function arcTween(a) {
+    function arcTween(a) {
       var startAngle = a.startAngle; //<-- keep reference to start angle
       var i = d3.interpolate(a.startAngle, a.endAngle); //<-- interpolate start to end
       return function(t) {
@@ -31,9 +32,9 @@ export default function donutChart(){
     }
 
     var sum = 0;
-    dataArr.forEach(function (d, j) {
+    /*dataArr.forEach(function (d, j) {
         sum += d.number;
-      })
+      })*/
 
     //remove current total
     container.select( "text.data" )
@@ -49,7 +50,7 @@ export default function donutChart(){
       .style("text-anchor", "middle")
       .style("opacity", 0)
       .attr("class", "data")
-      .text(function() {
+      .text(function(d) {
         return sum;
       })
       .transition()
@@ -71,11 +72,11 @@ export default function donutChart(){
     ;
     var arc = d3.arc()
       .outerRadius(radius)
-      .innerRadius(radius-innerRad)
+      .innerRadius(radius - innerRad)
     ;
 
     var hoverArc = d3.arc()
-      .outerRadius(radius-innerRad)
+      .outerRadius(radius - innerRad)
       .innerRadius(radius + hoverRad)
     ;
 
@@ -106,7 +107,7 @@ export default function donutChart(){
                 .attr("d", arc);
         })
         .attr("class", function (d) {
-          return classMap[d.data.transactionType];
+          return classMap[d.data.mcc_name];
         })
         .transition()
         .duration(700)
@@ -126,7 +127,6 @@ export default function donutChart(){
 
   chart.width = function(value){
     if (!arguments.length) return width;
-
     width = value;
     return chart;
   }
@@ -161,10 +161,9 @@ export default function donutChart(){
     padAngle = value;
     return chart; 
   }
-
   chart.constancyFunction = function(value){
     if (!arguments.length) return constancyFunction;
-    constancy = value; 
+    constancyFunction = value; 
     return chart;
   }
   chart.valueFunction = function(value){
@@ -177,7 +176,11 @@ export default function donutChart(){
     classMap = value;
     return chart;
   }
-
+  chart.classMapFunction = function(value){
+    if(!arguments.length) return classMapFunction;
+    classMapFunction = value;
+    return chart;
+  }
 
     return chart;
 }
