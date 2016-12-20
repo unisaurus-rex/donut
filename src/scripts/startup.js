@@ -68,39 +68,39 @@ var jsonData = [
   }
 ];
 
-console.log(jsonData);
-
 var valueFunction = function(d){
   return d.avg_fee;
 }
 var constancyFunction = function(d){
   return d.mcc_name;
 }
-
 var classMapFunction = function(d){
   return classMap[d.data.mcc_name];
 }
 
 //This data would be received by the controller
 //where txn_type = sig_debit and fi= "My Financial Institution"
-var classMap = {"Department Store": "fill-blue", "Grocery": "fill-red", "Family Clothing": "fill-gray-light", "Fast Food": "fill-orange-yellow", "Pharmacies": "fill-teal"};
-var classMapFunction = function (d){
-  return classMap[d.data.mcc_name];
-};
+var classMap = {"Department Store": "fill-blue", "Grocery": "fill-red",
+ "Family Clothing": "fill-gray-light", "Fast Food": "fill-orange-yellow",
+  "Pharmacies": "fill-teal"};
 
 var innerNumber = 0;
 jsonData.forEach(function(d,j){
-  innerNumber += d.avg_fee
+  innerNumber += d.avg_fee;
 });
+
+
+
 innerNumber = innerNumber / jsonData.length;
-console.log(innerNumber);
 
 var testTwo = donutChart()
   .classMap(classMap)
   .valueFunction(valueFunction)
   .constancyFunction(constancyFunction)
   .classMapFunction(classMapFunction)
-  .innerRad(90)
+  .innerRad(50)
+  .innerNumber(innerNumber)
+  .innerText("AVG INTERCHANGE")
 ;
 
 testTwo(svg, jsonData);

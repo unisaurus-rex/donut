@@ -17,8 +17,13 @@ export default function donutChart(){
   }
   var classMap = {"declines": "fill-danger", "authorizations": "fill-success", "chargebacks":"fill-warning"};
   var classMapFunction= function(d) {
-    classMap[d.data.transactionType];
+    return classMap[d.data.transactionType];
   }
+
+  var innerNumber = 0;
+
+
+  
   function chart(container, dataArr){
     function arcTween(a) {
       var startAngle = a.startAngle; //<-- keep reference to start angle
@@ -31,7 +36,7 @@ export default function donutChart(){
       };
     }
 
-    var sum = 0;
+    //var sum = 0;
     /*dataArr.forEach(function (d, j) {
         sum += d.number;
       })*/
@@ -51,7 +56,7 @@ export default function donutChart(){
       .style("opacity", 0)
       .attr("class", "data")
       .text(function(d) {
-        return sum;
+        return innerNumber;
       })
       .transition()
       .duration(1000)
@@ -106,9 +111,7 @@ export default function donutChart(){
                 .duration(1000)
                 .attr("d", arc);
         })
-        .attr("class", function (d) {
-          return classMap[d.data.mcc_name];
-        })
+        .attr("class", classMapFunction)
         .transition()
         .duration(700)
         .attrTween("d", arcTween)
@@ -180,6 +183,12 @@ export default function donutChart(){
     if(!arguments.length) return classMapFunction;
     classMapFunction = value;
     return chart;
+  }
+
+  chart.innerNumber = function (value){
+   if(!arguments.length) return innerNumber;
+    innerNumber = value;
+    return chart; 
   }
 
     return chart;
