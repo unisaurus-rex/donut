@@ -84,7 +84,7 @@ export default function donutChart(){
     var pie = d3.pie()
       .sort(null)
       .value ( valueFunction )
-      .padAngle( padAngle )
+      .padAngle(padAngle)
     ;
 
     var sel = container.selectAll("path")
@@ -110,13 +110,21 @@ export default function donutChart(){
         .attr("class", classMapFunction)
         .transition()
         .duration(700)
-        .attrTween("d", arcTween)
+        .attrTween('d', function(d) {
+        var interpolate = d3.interpolate({startAngle: 0, endAngle: 0}, d);
+        return function(t) {
+            return arc(interpolate(t));
+        }})
         ;
 
         sel.exit()
           .transition()
           .duration(700)
-          .attr("d", arcTween)
+          .attrTween('d', function(d) {
+        var interpolate = d3.interpolate({startAngle: 0, endAngle: 0}, d);
+        return function(t) {
+            return arc(interpolate(t));
+        }})
           .style("opacity", 0)
           .remove()
       ;

@@ -22,13 +22,12 @@ function type(d) {
   return d;
 }
 
-/*
+
 var test = donutChart()
   .innerText("NEW TEXT")
+  .padAngle(0.03)
+  .hoverRad(15)
 ;
-
-//console.log (test.hoverRad);
-window.hoverRad = test.hoverRad;
 
 d3.csv("scripts/donut/donutdata.csv", type, function(error, data) {
   test(svg, data);
@@ -42,9 +41,9 @@ d3.csv("scripts/donut/donutdata.csv", type, function(error, data) {
   window.filtered = filtered;
   window.svg = svg;
   window.data = data;
-});*/
+});
 
-
+/*
 var jsonData = [
   {
     "mcc_name": "Department Store",
@@ -103,4 +102,4 @@ var testTwo = donutChart()
   //.padAngle(0.5)
 ;
 
-testTwo(svg, jsonData);
+testTwo(svg, jsonData);*/
