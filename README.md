@@ -100,7 +100,7 @@ import donutChart from 'donut/donut.js';
 var function = donutchart();
 ```
 
-#### Configuration
+## Configuration
 Configuration can be assigned by calling the constructor function and chaining set functions
 
 ##### Configurable Options
@@ -138,10 +138,27 @@ classMapFunction (function)
 innerNumber (int or float) 
 * Number that will be displayed in the center
 
-#### Example
+## Example
+
+#### Importing module and creating svg
 ```
 import donutChart from 'donut/donut.js';
 
+var svg = d3.select("div#donutid")
+  .classed("svg-container", true)
+  .append("svg")
+  .attr("viewBox", "0 0 " + 500 + " " + 500)
+  //class for responsivenesss
+  .classed("svg-content-responsive-pie", true)
+  .attr("width", 500)
+  .attr("height", 500)
+  .append("g")
+  .attr("id", "donutchart")
+  .attr("transform", "translate(" + 500 / 2 + "," + 500 / 2 + ")")
+;
+```
+#### Example data set
+```
 var falsyData = [
   {
     "mcc_name": "Department Store",
@@ -164,7 +181,9 @@ var falsyData = [
     "avg_fee": 0.29486
   }
 ];
-
+```
+#### Define variables to be passed to setters
+```
 var valueFunction = function(d){
     return d.avg_fee;
 }
@@ -175,7 +194,9 @@ var classMapFunction= function(d) {
     return classMap[d.data.transactionType];
 }
 var classMap = {"declines": "fill-danger", "authorizations": "fill-success", "chargebacks":"fill-warning"};
-  
+```
+#### Configuration and function call
+```
 var func = donutChart()
     .width(500)
     .height(500)
@@ -187,5 +208,7 @@ var func = donutChart()
     .valueFunction( valueFunction )
     .classMapFunction( classMapFunction )
     .innerNumber( 0 )
+;
+    func(selection, falsydata); //where selection is a d3 selection
 ;
 ```

@@ -84,7 +84,7 @@ export default function donutChart(){
     var pie = d3.pie()
       .sort(null)
       .value ( valueFunction )
-      .padAngle(0.9)
+      .padAngle( padAngle )
     ;
 
     var sel = container.selectAll("path")
