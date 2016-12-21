@@ -90,7 +90,6 @@ jsonData.forEach(function(d,j){
 });
 
 
-
 innerNumber = innerNumber / jsonData.length;
 
 var testTwo = donutChart()
@@ -101,6 +100,7 @@ var testTwo = donutChart()
   .innerRad(50)
   .innerNumber(innerNumber)
   .innerText("AVG INTERCHANGE")
+  //.padAngle(0.5)
 ;
 
 testTwo(svg, jsonData);

@@ -87,3 +87,105 @@ When you try to run your new spec, you may encounter errors loading files import
 1) The Karma server serves all files from /base/<your path starts here>
 
 2) karma-jspm is a karma plugin that allows us to use our jspm/es6 modules with Karma and Jasmine. In some instances Karma's server paths may cause conflicts with the paths set up in the jspm config.js file.  To work around this, there is a jspm object in karma.conf.js that can be used to tell Karma how to reconfigure paths for testing only.
+
+#### Using the Module
+1) Add the path to system config (optional)
+2) Import the module
+3) Call the constructor function with optional arguments
+4) The constructor function returns a function that takes two parameters: a selection and data
+
+Example: 
+``` 
+import donutChart from 'donut/donut.js';
+var function = donutchart();
+```
+
+#### Configuration
+Configuration can be assigned by calling the constructor function and chaining set functions
+
+##### Configurable Options
+width (int)
+* Sets the max width of the chart
+
+height (int)
+* Sets the max height of the chart
+
+innerText (string)
+* Sets the inner text string that will be displayed in the center of the chart
+
+innerRad (int)
+* Set the inner radius of the chart
+
+hoverRad (int)
+* Set the value that will be added to the radius on hover
+
+padAngle (float)
+* Set the padding between arcs (value between 0 and 1)
+
+constancyFunction (function)
+* Key function for object constancy. 
+  * More details can be found here: https://bost.ocks.org/mike/constancy/
+
+valueFunction (function)
+* Accessor function that returns the numerical value to be charted
+
+classMap (key/values)
+* Object holding key-value pairs where key is the rowId and the value is the class that will be applied.
+
+classMapFunction (function)
+* Function that returns the correct value from classMap given a rowId
+
+innerNumber (int or float) 
+* Number that will be displayed in the center
+
+#### Example
+```
+import donutChart from 'donut/donut.js';
+
+var falsyData = [
+  {
+    "mcc_name": "Department Store",
+    "avg_fee": 0.29486
+  },
+  {
+    "mcc_name": "Grocery",
+    "avg_fee": 0.29486
+  },
+  {
+    "mcc_name": "Family Clothing",
+    "avg_fee": 0.29486
+  },
+  {
+    "mcc_name": "Fast Food",
+    "avg_fee": 0.29486
+  },
+  {
+    "mcc_name": "Pharmacies",
+    "avg_fee": 0.29486
+  }
+];
+
+var valueFunction = function(d){
+    return d.avg_fee;
+}
+var constancyFunction = function(d){
+    return d.transactionType;
+}
+var classMapFunction= function(d) {
+    return classMap[d.data.transactionType];
+}
+var classMap = {"declines": "fill-danger", "authorizations": "fill-success", "chargebacks":"fill-warning"};
+  
+var func = donutChart()
+    .width(500)
+    .height(500)
+    .innerText("TOTAL TRANS")
+    .innerRad(60)
+    .hoverRad(15)
+    .padAngle(0)
+    .constancyFunction( constancyFunction )
+    .valueFunction( valueFunction )
+    .classMapFunction( classMapFunction )
+    .innerNumber( 0 )
+;
+```

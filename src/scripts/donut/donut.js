@@ -31,17 +31,12 @@ export default function donutChart(){
       return function(t) {
           return arc({ //<-- return arc at each iteration from start to interpolate end
             startAngle: startAngle,
-            endAngle: i(t)
+            endAngle: i(t),
           });
       };
     }
 
-    //var sum = 0;
-    /*dataArr.forEach(function (d, j) {
-        sum += d.number;
-      })*/
-
-    //remove current total
+    //remove current number
     container.select( "text.data" )
       .transition()
       .duration(100)
@@ -49,7 +44,7 @@ export default function donutChart(){
       .remove()
     ;
     
-    //update total
+    //update number
     container.append("text")
       .attr("dy", ".95em")
       .style("text-anchor", "middle")
@@ -62,11 +57,11 @@ export default function donutChart(){
       .duration(1000)
       .style("opacity", 1)
     ;
-
     
+    //remove and add inner text
     container.selectAll ("text.inside")
-    .remove();
-    //add text for inner circle
+      .remove()
+    ;
     container.append("text")
       .attr("dy", "-0.5em")
       .style("text-anchor", "middle")
@@ -75,6 +70,7 @@ export default function donutChart(){
         return innerText;
       })
     ;
+    
     var arc = d3.arc()
       .outerRadius(radius)
       .innerRadius(radius - innerRad)
@@ -88,7 +84,7 @@ export default function donutChart(){
     var pie = d3.pie()
       .sort(null)
       .value ( valueFunction )
-      .padAngle(padAngle)
+      .padAngle(0.9)
     ;
 
     var sel = container.selectAll("path")
@@ -142,11 +138,6 @@ export default function donutChart(){
   chart.innerText = function(value){
     if (!arguments.length) return innerText;
     innerText = value;
-    return chart; 
-  }
-  chart.radius = function(value){
-    if (!arguments.length) return radius;
-    radius = value;
     return chart; 
   }
   chart.innerRad = function(value){
