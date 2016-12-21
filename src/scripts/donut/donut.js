@@ -25,16 +25,7 @@ export default function donutChart(){
 
   
   function chart(container, dataArr){
-    function arcTween(a) {
-      var startAngle = a.startAngle; //<-- keep reference to start angle
-      var i = d3.interpolate(a.startAngle, a.endAngle); //<-- interpolate start to end
-      return function(t) {
-          return arc({ //<-- return arc at each iteration from start to interpolate end
-            startAngle: startAngle,
-            endAngle: i(t),
-          });
-      };
-    }
+
 
     //remove current number
     container.select( "text.data" )
@@ -128,6 +119,17 @@ export default function donutChart(){
           .style("opacity", 0)
           .remove()
       ;
+
+    function arcTween(a) {
+      var startAngle = a.startAngle; //<-- keep reference to start angle
+      var i = d3.interpolate(a.startAngle, a.endAngle, a); //<-- interpolate start to end
+      return function(t) {
+          return arc({ //<-- return arc at each iteration from start to interpolate end
+            startAngle: startAngle,
+            endAngle: i(t),
+          });
+      };
+    }
 
 
   }

@@ -104,3 +104,44 @@ var testTwo = donutChart()
 ;
 
 testTwo(svg, jsonData);
+
+//For testing in console
+//Change data sets using testTwo(svg, filteredJsonData) and testTwo(svg, jsonData)
+
+window.testTwo = testTwo;
+window.svg = svg;
+window.jsonData = jsonData;
+
+var filteredJsonData = [
+  {
+    "mcc_name": "Grocery",
+    "avg_fee": 0.29486
+  },
+  {
+    "mcc_name": "Family Clothing",
+    "avg_fee": 0.29486
+  },
+  {
+    "mcc_name": "Fast Food",
+    "avg_fee": 0.29486
+  },
+  {
+    "mcc_name": "Pharmacies",
+    "avg_fee": 0.29486
+  }
+];
+
+var filteredJsonDataTwo = [
+  {
+    "mcc_name": "Grocery",
+    "avg_fee": 0.29486
+  }
+];
+
+var filteredJsonDataThree = [
+ 
+];
+
+window.filteredJsonData = filteredJsonData;
+window.filteredJsonDataTwo = filteredJsonDataTwo;
+window.filteredJsonDataThree = filteredJsonDataThree;
