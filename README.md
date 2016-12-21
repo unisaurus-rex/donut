@@ -209,6 +209,6 @@ var func = donutChart()
     .classMapFunction( classMapFunction )
     .innerNumber( 0 )
 ;
-    func(selection, falsydata); //where selection is a d3 selection
+    func(svg, falsydata); //where selection is a d3 selection
 ;
 ```
