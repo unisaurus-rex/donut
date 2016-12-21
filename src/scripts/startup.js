@@ -4,6 +4,7 @@ import bootstrap from 'bootstrap-sass';
 import donutChart from 'donut/donut.js';
 import * as d3 from "d3";
  
+ 
 var svg = d3.select("div#donutid")
   .classed("svg-container", true)
   .append("svg")
@@ -22,7 +23,7 @@ function type(d) {
   return d;
 }
 
-
+/*
 var test = donutChart()
   .innerText("NEW TEXT")
   .padAngle(0.03)
@@ -41,9 +42,9 @@ d3.csv("scripts/donut/donutdata.csv", type, function(error, data) {
   window.filtered = filtered;
   window.svg = svg;
   window.data = data;
-});
+});*/
 
-/*
+
 var jsonData = [
   {
     "mcc_name": "Department Store",
@@ -99,7 +100,7 @@ var testTwo = donutChart()
   .innerRad(50)
   .innerNumber(innerNumber)
   .innerText("AVG INTERCHANGE")
-  //.padAngle(0.5)
+  .padAngle(0.03)
 ;
 
-testTwo(svg, jsonData);*/
+testTwo(svg, jsonData);
