@@ -1,7 +1,7 @@
 import jquery from 'jquery';
 import bootstrap from 'bootstrap-sass';
 //import {donutChart} from 'donut-widget/donutWidget.js';
-import donutChart from 'donut/donut.js';
+import donutChart from 'donut';
 import * as d3 from "d3";
  
  

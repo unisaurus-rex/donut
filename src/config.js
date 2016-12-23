@@ -10,13 +10,11 @@ System.config({
   },
   paths: {
     "github:*": "jspm_packages/github/*",
-    "npm:*": "jspm_packages/npm/*",
-    "donut/*": "scripts/donut/*",
-    "donut-widget/*": "scripts/donutWidget/*",
-    "*": "scripts/*"
+    "npm:*": "jspm_packages/npm/*"
   },
 
   map: {
+    "donut": "scripts/donut/donut.js",
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
     "bootstrap-sass": "github:twbs/bootstrap-sass@3.3.7",
