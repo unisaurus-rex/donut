@@ -188,7 +188,7 @@ var valueFunction = function(d){
     return d.avg_fee;
 }
 var constancyFunction = function(d){
-    return d.transactionType;
+    return d.mcc_name;
 }
 var classMapFunction= function(d) {
     return classMap[d.data.transactionType];
